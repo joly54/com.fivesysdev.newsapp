@@ -16,6 +16,7 @@ class TopHeadlinesViewModel(
 
     val stateObserver = Observer<States>{
         if(it is States.Success){
+            println("Data loaded")
             ModelList.addAll(it.data.articles)
         }
     }

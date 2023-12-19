@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.test.newsapp"
+    namespace = "com.fivesysdev.newsapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.test.newsapp"
+        applicationId = "com.fivesysdev.newsapp"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
