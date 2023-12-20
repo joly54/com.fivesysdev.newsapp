@@ -4,20 +4,24 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.RecyclerView
+import com.fivesysdev.newsapp.adapters.NewsAdapter
 import com.fivesysdev.newsapp.data.ApiService
 import com.fivesysdev.newsapp.model.topHeadlines.Article
 import kotlinx.coroutines.launch
 
 class TopHeadlinesViewModel(
-    private val apiService: ApiService
-): ViewModel(){
+    private val apiService: ApiService,
+    private val adapter: NewsAdapter,
+) : ViewModel() {
     private val _state = MutableLiveData<States>()
-    val ModelList = mutableListOf<Article>()
+    val ModelLis: MutableLiveData<MutableList<Article>> by lazy {
+        MutableLiveData<MutableList<Article>>()
+    }
 
-    val stateObserver = Observer<States>{
-        if(it is States.Success){
-            println("Data loaded")
-            ModelList.addAll(it.data.articles)
+    val stateObserver = Observer<States> {
+        if (it is States.Success) {
+            adapter.setTopHeadlines(it.data)
         }
     }
 

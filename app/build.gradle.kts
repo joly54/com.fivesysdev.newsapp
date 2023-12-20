@@ -6,7 +6,6 @@ plugins {
 android {
     namespace = "com.fivesysdev.newsapp"
     compileSdk = 34
-
     defaultConfig {
         applicationId = "com.fivesysdev.newsapp"
         minSdk = 26
@@ -25,6 +24,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    buildFeatures{
+        viewBinding = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
