@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.fivesysdev.newsapp.R
@@ -16,8 +18,10 @@ import com.fivesysdev.newsapp.model.topHeadlines.TopHeadlines
 
 class NewsAdapter(
     private val context: Context,
+    private val navController: NavController
 ): RecyclerView.Adapter<NewsAdapter.MyNewsHolder>() {
     private var _TopHeadlines: MutableLiveData<TopHeadlines> = MutableLiveData()
+
 
     fun setTopHeadlines(topHeadlines: TopHeadlines) {
         _TopHeadlines.value = topHeadlines
@@ -29,12 +33,19 @@ class NewsAdapter(
     }
 
 
-    class MyNewsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class MyNewsHolder(itemView: View,
+        private val navController: NavController
+        ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val title: TextView = itemView.findViewById(R.id.txt_name)
         val description: TextView = itemView.findViewById(R.id.txt_team)
         val image: ImageView = itemView.findViewById(R.id.image_movie)
         val createdBy: TextView = itemView.findViewById(R.id.txt_createdby)
-
+        init {
+            itemView.setOnClickListener(this)
+        }
+        override fun onClick(v: View) {
+            navController.navigate(R.id.action_newsListFragment_to_detailsFragment2)
+        }
         fun bind(item: Article) {
             title.text = item.title
             description.text = item.description
@@ -45,14 +56,18 @@ class NewsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyNewsHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
-        return MyNewsHolder(itemView)
+        itemView.setOnClickListener {
+            val navController = Navigation.findNavController(itemView)
+            navController.navigate(R.id.action_newsListFragment_to_detailsFragment2)
+            println("Clicked")
+        }
+        return MyNewsHolder(itemView, navController)
     }
     override fun getItemCount() = _TopHeadlines.value?.articles?.size ?: 0
     override fun onBindViewHolder(holder: MyNewsHolder, position: Int) {
         if(_TopHeadlines.value == null) return
         val listItem = _TopHeadlines.value!!.articles.get(position)
         holder.bind(listItem)
-
         holder.image.load(listItem.urlToImage)
         holder.title.text = listItem.title
         holder.description.text = listItem.description
