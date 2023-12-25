@@ -1,15 +1,10 @@
 package com.fivesysdev.newsapp
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesysdev.newsapp.adapters.NewsAdapter
@@ -18,7 +13,7 @@ import com.fivesysdev.newsapp.viewModel.topHeadlines.TopHeadlinesViewModel
 import org.koin.android.ext.android.inject
 
 class NewsListFragment(
-    private val navController: NavController
+    private val fragmentManager: androidx.fragment.app.FragmentManager,
 ) : Fragment(R.layout.fragment_news_list) {
     private lateinit var recyclerView: RecyclerView
     private val apiService: ApiService by inject()
@@ -31,8 +26,7 @@ class NewsListFragment(
             insets
         }
         recyclerView = view.findViewById(R.id.recyclerNewsList)
-
-        val adapter = NewsAdapter(requireContext(), navController)
+        val adapter = NewsAdapter(requireContext(), fragmentManager)
         val vm = TopHeadlinesViewModel(apiService, adapter)
 
         vm.state.observe(viewLifecycleOwner, vm.stateObserver)
