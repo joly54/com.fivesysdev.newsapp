@@ -8,25 +8,48 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.fivesysdev.newsapp.DetailsFragment
 import com.fivesysdev.newsapp.R
+import com.fivesysdev.newsapp.databinding.FragmentNewsListBinding
+import com.fivesysdev.newsapp.databinding.NewsCardBinding
 import com.fivesysdev.newsapp.model.topHeadlines.Article
 import com.fivesysdev.newsapp.model.topHeadlines.TopHeadlines
 
 
 class NewsAdapter(
     private val context: Context,
-    private val fragmentManager: androidx.fragment.app.FragmentManager
+    private val fragmentManager: androidx.fragment.app.FragmentManager,
+    private val binding: FragmentNewsListBinding
 ) : RecyclerView.Adapter<NewsAdapter.MyNewsHolder>() {
     private var _TopHeadlines: MutableLiveData<TopHeadlines> = MutableLiveData()
 
 
     fun setTopHeadlines(topHeadlines: TopHeadlines) {
-        _TopHeadlines.value = topHeadlines
-        println("SetTopHeadlines size: ${topHeadlines.articles.size}")
-        notifyDataSetChanged()
+        updateList(topHeadlines)
+    }
+    fun updateList(newList: TopHeadlines) {
+        val diffCallback = NewsDiffCallback(_TopHeadlines.value?.articles ?: emptyList(), newList.articles)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        _TopHeadlines.value = newList
+        diffResult.dispatchUpdatesTo(this)
+    }
+    class NewsDiffCallback(
+        private val oldList: List<Article>,
+        private val newList: List<Article>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize() = oldList.size
+        override fun getNewListSize() = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].url == newList[newItemPosition].url
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
     }
 
     fun getTopHeadlines(): TopHeadlines? {
@@ -36,12 +59,13 @@ class NewsAdapter(
 
     class MyNewsHolder(
         private val itemView: View,
-        private val fragmentManager: androidx.fragment.app.FragmentManager
+        private val fragmentManager: androidx.fragment.app.FragmentManager,
+        private val binding: NewsCardBinding = NewsCardBinding.bind(itemView)
     ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        val title: TextView = itemView.findViewById(R.id.txt_name)
-        val description: TextView = itemView.findViewById(R.id.txt_team)
-        val image: ImageView = itemView.findViewById(R.id.image_movie)
-        val createdBy: TextView = itemView.findViewById(R.id.txt_createdby)
+        val title: TextView = binding.txtName
+        val description: TextView = binding.txtTeam
+        val image: ImageView = binding.newsImage
+        val createdBy: TextView = binding.txtCreatedby
 
         init {
             itemView.setOnClickListener(this)
@@ -64,7 +88,7 @@ class NewsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyNewsHolder {
         val itemView =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.news_card, parent, false)
         itemView.setOnClickListener {
             val navController = Navigation.findNavController(itemView)
             navController.navigate(R.id.action_newsListFragment_to_detailsFragment2)
