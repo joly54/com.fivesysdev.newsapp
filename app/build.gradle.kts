@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-
 }
 
 android {
@@ -46,10 +45,8 @@ dependencies {
     implementation (libs.rxjava)
 
     implementation (libs.androidx.navigation.fragment.ktx)
-    implementation( libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.fragment)
-
-
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

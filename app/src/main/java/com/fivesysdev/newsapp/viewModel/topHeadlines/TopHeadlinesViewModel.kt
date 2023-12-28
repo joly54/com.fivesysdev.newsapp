@@ -22,7 +22,6 @@ class TopHeadlinesViewModel(
     val stateObserver = Observer<States> {
         if (it is States.Success) {
             adapter.setTopHeadlines(it.data)
-            println("Update List")
         }
     }
 
@@ -34,13 +33,16 @@ class TopHeadlinesViewModel(
     }
 
     fun getTopHeadlines() {
+        println("getTopHeadlines")
         viewModelScope.launch {
             _state.value = States.Loading
             try {
                 val response = apiService.getTopHeadlines()
                 _state.value = States.Success(response)
+                println("Success")
             } catch (e: Exception) {
                 println("Error")
+                e.printStackTrace()
                 _state.value = States.Error(e.message.toString())
             }
         }
