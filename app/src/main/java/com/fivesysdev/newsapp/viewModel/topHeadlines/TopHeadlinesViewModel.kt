@@ -22,6 +22,7 @@ class TopHeadlinesViewModel(
     val stateObserver = Observer<States> {
         if (it is States.Success) {
             adapter.setTopHeadlines(it.data)
+            println("Update List")
         }
     }
 
@@ -38,7 +39,6 @@ class TopHeadlinesViewModel(
             try {
                 val response = apiService.getTopHeadlines()
                 _state.value = States.Success(response)
-                println("Success")
             } catch (e: Exception) {
                 println("Error")
                 _state.value = States.Error(e.message.toString())

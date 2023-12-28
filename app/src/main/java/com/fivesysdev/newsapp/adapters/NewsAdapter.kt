@@ -19,7 +19,6 @@ import com.fivesysdev.newsapp.model.topHeadlines.TopHeadlines
 
 
 class NewsAdapter(
-    private val fragmentManager: FragmentManager
 ) : RecyclerView.Adapter<NewsAdapter.MyNewsHolder>() {
     private var _TopHeadlines: MutableLiveData<TopHeadlines> = MutableLiveData()
 
@@ -32,6 +31,7 @@ class NewsAdapter(
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         _TopHeadlines.value = newList
         diffResult.dispatchUpdatesTo(this)
+        println("NewsAdapter.updateList")
     }
     class NewsDiffCallback(
         private val oldList: List<Article>,
@@ -56,7 +56,6 @@ class NewsAdapter(
 
     class MyNewsHolder(
         private val itemView: View,
-        private val fragmentManager: FragmentManager,
         binding: NewsCardBinding = NewsCardBinding.bind(itemView)
     ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val title: TextView = binding.txtName
@@ -88,7 +87,7 @@ class NewsAdapter(
             navController.navigate(R.id.action_newsListFragment_to_detailsFragment2)
             println("Clicked")
         }
-        return MyNewsHolder(itemView, fragmentManager)
+        return MyNewsHolder(itemView)
     }
 
     override fun getItemCount() = _TopHeadlines.value?.articles?.size ?: 0

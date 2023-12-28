@@ -13,31 +13,26 @@ import com.fivesysdev.newsapp.databinding.FragmentNewsListBinding
 import com.fivesysdev.newsapp.viewModel.topHeadlines.TopHeadlinesViewModel
 import org.koin.android.ext.android.inject
 
-class NewsListFragment(
-    private val fragmentManager: androidx.fragment.app.FragmentManager,
-) : Fragment(R.layout.fragment_news_list) {
+class NewsListFragment: Fragment() {
     private lateinit var recyclerView: RecyclerView
     private val apiService: ApiService by inject()
     private lateinit var binding: FragmentNewsListBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        println("NewsListFragment.onCreate")
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        println("NewsListFragment.onViewCreated")
         binding = FragmentNewsListBinding.bind(view)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.recyclerNewsList.setPadding(
-                systemBarsInsets.left,
-                systemBarsInsets.top,
-                systemBarsInsets.right,
-                systemBarsInsets.bottom
-            )
-            insets
-        }
+        println("Binding")
         recyclerView = binding.recyclerNewsList
-        val adapter = NewsAdapter(fragmentManager)
+        val adapter = NewsAdapter()
         val vm = TopHeadlinesViewModel(apiService, adapter)
 
         vm.state.observe(viewLifecycleOwner, vm.stateObserver)
+        println("Observing")
 
         recyclerView.setHasFixedSize(true)
 
