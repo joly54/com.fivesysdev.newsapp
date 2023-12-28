@@ -34,7 +34,7 @@ class NewsListFragment(
             insets
         }
         recyclerView = binding.recyclerNewsList
-        val adapter = NewsAdapter(requireContext(), fragmentManager, binding)
+        val adapter = NewsAdapter(fragmentManager)
         val vm = TopHeadlinesViewModel(apiService, adapter)
 
         vm.state.observe(viewLifecycleOwner, vm.stateObserver)

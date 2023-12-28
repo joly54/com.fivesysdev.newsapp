@@ -1,11 +1,11 @@
 package com.fivesysdev.newsapp.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
@@ -13,16 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.fivesysdev.newsapp.DetailsFragment
 import com.fivesysdev.newsapp.R
-import com.fivesysdev.newsapp.databinding.FragmentNewsListBinding
 import com.fivesysdev.newsapp.databinding.NewsCardBinding
 import com.fivesysdev.newsapp.model.topHeadlines.Article
 import com.fivesysdev.newsapp.model.topHeadlines.TopHeadlines
 
 
 class NewsAdapter(
-    private val context: Context,
-    private val fragmentManager: androidx.fragment.app.FragmentManager,
-    private val binding: FragmentNewsListBinding
+    private val fragmentManager: FragmentManager
 ) : RecyclerView.Adapter<NewsAdapter.MyNewsHolder>() {
     private var _TopHeadlines: MutableLiveData<TopHeadlines> = MutableLiveData()
 
@@ -59,8 +56,8 @@ class NewsAdapter(
 
     class MyNewsHolder(
         private val itemView: View,
-        private val fragmentManager: androidx.fragment.app.FragmentManager,
-        private val binding: NewsCardBinding = NewsCardBinding.bind(itemView)
+        private val fragmentManager: FragmentManager,
+        binding: NewsCardBinding = NewsCardBinding.bind(itemView)
     ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val title: TextView = binding.txtName
         val description: TextView = binding.txtTeam
@@ -72,10 +69,7 @@ class NewsAdapter(
         }
 
         override fun onClick(v: View) {
-            val transaction = fragmentManager.beginTransaction()
-            val secondFragment = DetailsFragment()
-            transaction.replace(R.id.fragment_linear_layout, secondFragment)
-            transaction.commit()
+            //TODO make navigation with navController
         }
 
         fun bind(item: Article) {

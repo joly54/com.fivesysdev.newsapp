@@ -3,6 +3,8 @@ package com.fivesysdev.newsapp
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -10,10 +12,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_linear_layout, NewsListFragment(supportFragmentManager))
-                .commit()
-        }
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        navController.setGraph(R.navigation.mobile_navigation)
     }
 }
