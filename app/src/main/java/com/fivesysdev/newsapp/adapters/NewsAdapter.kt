@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -42,6 +43,7 @@ class NewsAdapter(
 
     class MyNewsHolder(private val binding: NewsCardBinding) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+            private lateinit var item: Article
 
         init {
             itemView.setOnClickListener(this)
@@ -50,13 +52,14 @@ class NewsAdapter(
         override fun onClick(v: View) {
             val navController = Navigation.findNavController(itemView)
             val Bundle = Bundle()
-            Bundle.putString("title", binding.txtName.text.toString())
-            Bundle.putString("description", binding.txtTeam.text.toString())
-            Bundle.putString("author", binding.txtCreatedby.text.toString())
+            Bundle.putString("title", item.title)
+            Bundle.putString("description", item.description)
+            Bundle.putString("author", item.author)
+            Bundle.putString("image_url", item.urlToImage)
             navController.navigate(R.id.action_newsListFragment_to_detailsFragment, Bundle)
         }
-
         fun bind(item: Article) {
+            this.item = item
             binding.txtName.text = item.title
             binding.txtTeam.text = item.description
             binding.imageMovie.load(item.urlToImage)

@@ -18,31 +18,27 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         initializeBinding(inflater.inflate(R.layout.fragment_details, container, false))
 
-        val arguments = getArguments()
+        val arguments = arguments
         val title = arguments?.getString("title")
         val description = arguments?.getString("description")
-        val image_url = arguments?.getString("image_url")
+        val imageUrl = arguments?.getString("image_url")
+        println("Image URL: $imageUrl")
 
-        println("title: $title, description: $description, author: $image_url")
-        binding.imageView.load(image_url)
         binding.textViewTitle.text = title
         binding.textViewOverview.text = description
-
-        //TODO make this work
-
+        binding.imageView.load(imageUrl)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.fragmentDetails) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        return inflater.inflate(R.layout.fragment_details, container, false)
+        return binding.root
     }
     private fun initializeBinding(view: View) {
         binding = FragmentDetailsBinding.bind(view)
     }
-
 }
