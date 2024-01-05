@@ -20,25 +20,63 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         savedInstanceState: Bundle?
     ): View {
         initializeBinding(inflater.inflate(R.layout.fragment_details, container, false))
+        initPadding()
+        initShareButton()
+        initOpenAtSiteButton()
+        initBackButton()
 
         val arguments = arguments
         val title = arguments?.getString("title")
         val description = arguments?.getString("description")
         val imageUrl = arguments?.getString("image_url")
-        println("Image URL: $imageUrl")
 
         binding.textViewTitle.text = title
         binding.textViewOverview.text = description
         binding.imageView.load(imageUrl)
 
+
+        return binding.root
+    }
+
+    private fun initializeBinding(view: View) {
+        binding = FragmentDetailsBinding.bind(view)
+    }
+
+    private fun initPadding() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.fragmentDetails) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        return binding.root
     }
-    private fun initializeBinding(view: View) {
-        binding = FragmentDetailsBinding.bind(view)
+    private fun initShareButton(
+        title: String = binding.textViewTitle.text.toString(),
+        description: String = binding.textViewOverview.text.toString()
+    ){
+        binding.shareButton.setOnClickListener {
+            val shareIntent = android.content.Intent().apply {
+                action = android.content.Intent.ACTION_SEND
+                putExtra(android.content.Intent.EXTRA_TEXT, "$title\n\n$description")
+                type = "text/plain"
+            }
+            val shareIntentChooser = android.content.Intent.createChooser(shareIntent, null)
+            startActivity(shareIntentChooser)
+        }
+    }
+    private fun initOpenAtSiteButton(){
+        binding.buttonOpenAtSite.setOnClickListener {
+            val url = arguments?.getString("url")
+            if(url == null) return@setOnClickListener
+            val openAtSiteIntent = android.content.Intent().apply {
+                action = android.content.Intent.ACTION_VIEW
+                data = android.net.Uri.parse(url)
+            }
+            startActivity(openAtSiteIntent)
+        }
+    }
+    private fun initBackButton(){
+        binding.backButton.setOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 }

@@ -18,16 +18,10 @@
         <action
             android:id="@+id/action_newsListFragment_to_detailsFragment"
             app:destination="@id/detailsFragment">
-            <argument
-                android:name="title"
-                app:argType="string" />
-            <argument
-                android:name="description"
-                app:argType="string" />
-            <argument
-                android:name="image_url"
-                app:argType="string" />
         </action>
+        <action
+            android:id="@+id/action_newsListFragment_to_favoriteFragment"
+            app:destination="@id/favoriteFragment" />
 
     </fragment>
 
@@ -36,4 +30,8 @@
         android:name="com.fivesysdev.newsapp.DetailsFragment"
         android:label="fragment_details"
         tools:layout="@layout/fragment_details" />
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.fivesysdev.newsapp.FavoriteFragment"
+        android:label="FavoriteFragment" />
 </navigation>

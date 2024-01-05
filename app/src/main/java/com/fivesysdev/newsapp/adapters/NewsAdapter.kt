@@ -1,19 +1,14 @@
 package com.fivesysdev.newsapp.adapters
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.fivesysdev.newsapp.DetailsFragment
 import com.fivesysdev.newsapp.R
 import com.fivesysdev.newsapp.databinding.NewsCardBinding
 import com.fivesysdev.newsapp.model.topHeadlines.Article
@@ -56,14 +51,14 @@ class NewsAdapter(
             Bundle.putString("description", item.description)
             Bundle.putString("author", item.author)
             Bundle.putString("image_url", item.urlToImage)
+            Bundle.putString("url", item.url)
             navController.navigate(R.id.action_newsListFragment_to_detailsFragment, Bundle)
         }
         fun bind(item: Article) {
             this.item = item
             binding.txtName.text = item.title
-            binding.txtTeam.text = item.description
-            binding.imageMovie.load(item.urlToImage)
-            binding.txtCreatedby.text = item.author
+            binding.newsImage.load(item.urlToImage)
+            binding.createdBy.text = item.author
         }
     }
 

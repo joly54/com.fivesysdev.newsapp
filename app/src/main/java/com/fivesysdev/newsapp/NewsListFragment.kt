@@ -19,16 +19,12 @@ class NewsListFragment : Fragment(R.layout.fragment_news_list) {
     private val apiService: ApiService by inject()
     private lateinit var binding: FragmentNewsListBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentNewsListBinding.bind(view)
         recyclerView = binding.recyclerNewsList
         initializeRecyclerView()
+        initPadding()
     }
 
     private fun initializeRecyclerView() {
@@ -40,5 +36,12 @@ class NewsListFragment : Fragment(R.layout.fragment_news_list) {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
+    }
+    private fun initPadding() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.recyclerNewsList) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
     }
 }
