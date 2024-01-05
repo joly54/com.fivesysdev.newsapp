@@ -4,11 +4,10 @@ plugins {
 }
 
 android {
-    namespace = "com.test.newsapp"
+    namespace = "com.fivesysdev.newsapp"
     compileSdk = 34
-
     defaultConfig {
-        applicationId = "com.test.newsapp"
+        applicationId = "com.fivesysdev.newsapp"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
@@ -26,6 +25,9 @@ android {
             )
         }
     }
+    buildFeatures{
+        viewBinding = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -41,6 +43,10 @@ dependencies {
     implementation(libs.bundles.network)
     implementation(libs.bundles.di)
     implementation (libs.rxjava)
+
+    implementation (libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.fragment)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -1,5 +1,5 @@
 [versions]
-agp = "8.3.0-alpha18"
+agp = "8.3.0-beta01"
 kotlin = "1.9.21"
 coreKtx = "1.12.0"
 junit = "4.13.2"
@@ -9,12 +9,17 @@ appcompat = "1.6.1"
 material = "1.11.0"
 activity = "1.8.2"
 constraintlayout = "2.1.4"
+navigationUiKtx = "2.7.6"
+navigationFragmentKtx = "2.7.6"
 retrofit = "2.9.0"
 koin = "3.5.0"
 rxjava = "3.1.8"
 coil = "2.5.0"
+fragment = "1.6.2"
 
 [libraries]
+androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationUiKtx" }
+androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -29,6 +34,7 @@ retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", ver
 koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
+androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
