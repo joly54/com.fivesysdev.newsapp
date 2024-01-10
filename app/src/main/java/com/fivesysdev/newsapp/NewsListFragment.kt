@@ -5,7 +5,6 @@ import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesysdev.newsapp.adapters.NewsAdapter
@@ -29,7 +28,7 @@ class NewsListFragment : Fragment(R.layout.fragment_news_list) {
 
     private fun initializeRecyclerView() {
         val adapter = NewsAdapter()
-        val vm = TopHeadlinesViewModel(apiService, adapter)
+        val vm = TopHeadlinesViewModel(apiService, adapter, requireActivity().application)
 
         vm.state.observe(viewLifecycleOwner, vm.stateObserver)
 

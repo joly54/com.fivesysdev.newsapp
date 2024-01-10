@@ -52,6 +52,8 @@ class NewsAdapter(
             Bundle.putString("author", item.author)
             Bundle.putString("image_url", item.urlToImage)
             Bundle.putString("url", item.url)
+            Bundle.putInt("id", item.url.hashCode())
+
             navController.navigate(R.id.action_newsListFragment_to_detailsFragment, Bundle)
         }
         fun bind(item: Article) {
