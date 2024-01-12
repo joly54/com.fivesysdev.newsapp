@@ -19,8 +19,15 @@
             android:paddingLeft="8dp"
             android:paddingTop="8dp"
             android:paddingRight="8dp"
+            android:scrollbars="vertical"
             android:paddingBottom="8dp">
-
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:padding="16dp"
+                android:src="@drawable/ic_back" />
             <TextView
                 android:id="@+id/textViewTitle"
                 android:layout_width="wrap_content"
@@ -41,36 +48,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop" />
-                <ImageButton
-                    android:id="@+id/backButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:padding="16dp"
-                    android:src="@drawable/ic_back" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_gravity="bottom|end">
-                    <ImageButton
-                        android:id="@+id/shareButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|end"
-                        android:background="@android:color/transparent"
-                        android:padding="16dp"
-                        android:src="@drawable/ic_share" />
-                    <ImageButton
-                        android:id="@+id/faviroteButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|end"
-                        android:background="@android:color/transparent"
-                        android:padding="16dp"
-                        android:src="@drawable/ic_star_outline" />
-                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -84,14 +61,45 @@
                 android:textStyle="italic"
                 tools:ignore="HardcodedText" />
 
-            <Button
-                android:id="@+id/buttonOpenAtSite"
-                android:layout_width="wrap_content"
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:text="Open at site"
-                tools:ignore="HardcodedText" />
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonOpenAtSite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Open at site"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/faviroteButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="HardcodedText" />
+
+                <ImageButton
+                    android:id="@+id/shareButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:background="@android:color/transparent"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_share"
+                    app:layout_constraintEnd_toStartOf="@+id/faviroteButton" />
+
+                <ImageButton
+                    android:id="@+id/faviroteButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:background="@android:color/transparent"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_star_outline"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </LinearLayout>
