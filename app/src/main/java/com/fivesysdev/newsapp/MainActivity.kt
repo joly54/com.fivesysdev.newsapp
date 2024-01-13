@@ -4,30 +4,43 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.fivesysdev.newsapp.common.presentation.viewBinding
 import com.fivesysdev.newsapp.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
+
+    private val binding: ActivityMainBinding by viewBinding(ActivityMainBinding::inflate)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        setContentView(binding.root)
+
         setupNavigation()
-        val binding = ActivityMainBinding.inflate(layoutInflater)
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener  {
+
+
+        binding.bottomNavigationView.setupWithNavController(navController = NavController(this))
+        binding.bottomNavigationView.setOnItemSelectedListener {
             println("Menu item clicked: ${it.title}")
             when (it.itemId) {
-                R.id.item_1 -> {
+                R.id.newsListFragment -> {
                     showToast("Item 1 clicked")
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.newsListFragment)
                     true
                 }
 
-                R.id.item_2 -> {
+                R.id.favoriteFragment -> {
                     showToast("Item 2 clicked")
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.favoriteFragment)
                     true
                 }
 
                 else -> {
-                    false
+                    true
                 }
             }
         }
@@ -36,8 +49,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
-    private fun setupNavigation(){
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+
+    private fun setupNavigation() {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         navController.navigate(R.id.newsListFragment)
     }

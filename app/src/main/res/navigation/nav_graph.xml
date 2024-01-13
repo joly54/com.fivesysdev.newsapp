@@ -6,11 +6,6 @@
     app:defaultNavHost="true"
     app:startDestination="@id/newsListFragment">
 
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.fivesysdev.newsapp.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
     <fragment
         android:id="@+id/newsListFragment"
         android:name="com.fivesysdev.newsapp.NewsListFragment"
