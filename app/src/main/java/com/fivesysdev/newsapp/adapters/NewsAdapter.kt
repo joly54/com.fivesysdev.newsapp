@@ -1,6 +1,5 @@
 package com.fivesysdev.newsapp.adapters
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.fivesysdev.newsapp.R
+import com.fivesysdev.newsapp.NewsListFragmentDirections
 import com.fivesysdev.newsapp.databinding.NewsCardBinding
 import com.fivesysdev.newsapp.room.models.news.news.News
 
@@ -44,20 +43,25 @@ class NewsAdapter(
         }
 
         override fun onClick(v: View) {
-            val navController = Navigation.findNavController(itemView)
-            val Bundle = Bundle()
-            Bundle.putString("title", item.title)
-            Bundle.putString("description", item.description)
-            Bundle.putString("image_url", item.urlToImage)
-            Bundle.putString("url", item.url)
-            Bundle.putInt("id", item.url.hashCode())
 
-            navController.navigate(R.id.action_newsListFragment_to_detailsFragment, Bundle)
+
+            val action = NewsListFragmentDirections.actionNewsListFragmentToDetailsFragment(
+                title = item.title,
+                description = item.description,
+                url = item.url,
+                imageUrl = item.urlToImage,
+                id = item.id,
+
+            )
+            val navController = Navigation.findNavController(itemView)
+            navController.navigate(action)
         }
         fun bind(item: News) {
             this.item = item
-            binding.txtName.text = item.title
-            binding.newsImage.load(item.urlToImage)
+            with(binding){
+                txtName.text = item.title
+                newsImage.load(item.urlToImage)
+            }
         }
     }
 

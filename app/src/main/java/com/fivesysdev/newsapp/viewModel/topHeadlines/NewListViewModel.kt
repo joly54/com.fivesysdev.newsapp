@@ -18,10 +18,6 @@ class NewListViewModel(
     val ModelLis: MutableLiveData<MutableList<Article>> by lazy {
         MutableLiveData<MutableList<Article>>()
     }
-    init {
-        getTopHeadlines()
-    }
-
     fun getTopHeadlines() {
         println("getTopHeadlines")
         viewModelScope.launch {

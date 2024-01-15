@@ -7,4 +7,5 @@ class FavoriteNewsRepo(private val favoriteNewsDao: favoriteNewsDao){
     fun getAll() = favoriteNewsDao.getAll()
     suspend fun isFavorite(news_id: Int) = favoriteNewsDao.isFavorite(news_id)
     suspend fun unfavorite(news_id: Int) = favoriteNewsDao.unfavorite(news_id)
+    fun getAllFavorite() = favoriteNewsDao.getAllFavorite()
 }

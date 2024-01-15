@@ -1,7 +1,6 @@
 package com.fivesysdev.newsapp
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -25,16 +24,13 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNavigationView.setupWithNavController(navController = NavController(this))
         binding.bottomNavigationView.setOnItemSelectedListener {
-            println("Menu item clicked: ${it.title}")
             when (it.itemId) {
                 R.id.newsListFragment -> {
-                    showToast("Item 1 clicked")
                     findNavController(R.id.nav_host_fragment).navigate(R.id.newsListFragment)
                     true
                 }
 
                 R.id.favoriteFragment -> {
-                    showToast("Item 2 clicked")
                     findNavController(R.id.nav_host_fragment).navigate(R.id.favoriteFragment)
                     true
                 }
@@ -44,10 +40,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun setupNavigation() {

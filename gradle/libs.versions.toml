@@ -18,8 +18,8 @@ coil = "2.5.0"
 fragment = "1.6.2"
 ksp = "1.9.22-1.0.16"
 room = "2.6.1"
-lifecycle-runtime-ktx = "2.6.2"
-live-data = "1.6.0-beta03"
+lifecycle-runtime-ktx = "2.7.0"
+live-data = "1.6.0-rc01"
 
 [libraries]
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationUiKtx" }
@@ -45,12 +45,15 @@ androidx-fragment = { group = "androidx.fragment", name = "fragment", version.re
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+safeArgs-gradle = { group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version.ref = "navigationUiKtx" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+safeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigationUiKtx" }
 
 [bundles]
 core = [ "androidx-core-ktx", "androidx-appcompat", "material", "androidx-activity", "androidx-constraintlayout", "coil" ]

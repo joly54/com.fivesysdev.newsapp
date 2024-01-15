@@ -23,6 +23,7 @@ class DataBaseViewModel(
 
     inner class NewsActions {
         fun getAll() = repository.newsRepository.getAllNews()
+        fun getAllFavorite() = repository.favoriteNewsRepository.getAllFavorite()
         fun insert(news: News) {
             viewModelScope.launch(Dispatchers.IO) {
                 repository.newsRepository.upsert(news)
@@ -75,6 +76,7 @@ class DataBaseViewModel(
                 println("End unfavorite")
             }
         }
+        fun getAllFavorite() = repository.favoriteNewsRepository.getAllFavorite()
 
         suspend fun isFavorite(news_id: Int) = repository.favoriteNewsRepository.isFavorite(news_id)
     }

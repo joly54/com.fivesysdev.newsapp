@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import coil.load
 import com.fivesysdev.newsapp.databinding.FragmentDetailsBinding
 import com.fivesysdev.newsapp.room.DataBaseViewModel
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 class DetailsFragment : Fragment(R.layout.fragment_details) {
     private lateinit var binding: FragmentDetailsBinding
     private lateinit var dbViewModel: DataBaseViewModel
+    val args: DetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,48 +33,67 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         initOpenAtSiteButton()
         initBackButton()
         initViewModel()
-        initFavoriteButton(binding)
+        initFavoriteButton()
 
-        val arguments = arguments
-        val title = arguments?.getString("title")
-        val description = arguments?.getString("description")
-        val imageUrl = arguments?.getString("image_url")
+        val title = args.title
+        val description = args.description
+        val imageUrl = args.imageUrl
+        val url = args.url
+        val id = args.id
 
-        binding.textViewTitle.text = title
-        binding.textViewOverview.text = description
-        binding.imageView.load(imageUrl)
-
-        return binding.root
-    }
-    private fun initFavoriteButton(binding: FragmentDetailsBinding){
-        val button = binding.faviroteButton
-        val coroutineScope = CoroutineScope(Dispatchers.IO)
-        coroutineScope.launch {
-            val news_id = arguments?.getInt("id") ?: 0
-            val isFavorite = dbViewModel.favoriteNews.isFavorite(news_id)
-            println("News is favorite: $news_id $isFavorite")
-            if (isFavorite) {
-                button.setImageDrawable(resources.getDrawable(R.drawable.ic_star, null))
-            } else {
-                button.setImageDrawable(resources.getDrawable(R.drawable.ic_star_outline, null))
-            }
+        with(binding) {
+            textViewTitle.text = title
+            textViewOverview.text = description
+            imageView.load(imageUrl)
+            return root
         }
-        button.setOnClickListener {
+    }
+
+    private fun initFavoriteButton() {
+        with(binding) {
             val coroutineScope = CoroutineScope(Dispatchers.IO)
             coroutineScope.launch {
-                val news_id = arguments?.getInt("id") ?: 0
+                val news_id = args.id
                 val isFavorite = dbViewModel.favoriteNews.isFavorite(news_id)
-                println("News is favorite: $news_id $isFavorite")
                 if (isFavorite) {
-                    dbViewModel.favoriteNews.unFavorite(news_id)
-                    button.setImageDrawable(resources.getDrawable(R.drawable.ic_star_outline, null))
+                    faviroteButton.setImageDrawable(resources.getDrawable(R.drawable.ic_star, null))
                 } else {
-                    dbViewModel.favoriteNews.upsert(FavoriteNews(news_id = news_id))
-                    button.setImageDrawable(resources.getDrawable(R.drawable.ic_star, null))
+                    faviroteButton.setImageDrawable(
+                        resources.getDrawable(
+                            R.drawable.ic_star_outline,
+                            null
+                        )
+                    )
+                }
+            }
+            faviroteButton.setOnClickListener {
+                val coroutineScope = CoroutineScope(Dispatchers.IO)
+                coroutineScope.launch {
+                    val news_id = args.id
+                    val isFavorite = dbViewModel.favoriteNews.isFavorite(news_id)
+                    println("News is favorite: $news_id $isFavorite")
+                    if (isFavorite) {
+                        dbViewModel.favoriteNews.unFavorite(news_id)
+                        faviroteButton.setImageDrawable(
+                            resources.getDrawable(
+                                R.drawable.ic_star_outline,
+                                null
+                            )
+                        )
+                    } else {
+                        dbViewModel.favoriteNews.upsert(FavoriteNews(news_id = news_id))
+                        faviroteButton.setImageDrawable(
+                            resources.getDrawable(
+                                R.drawable.ic_star,
+                                null
+                            )
+                        )
+                    }
                 }
             }
         }
     }
+
     private fun initializeBinding(view: View) {
         binding = FragmentDetailsBinding.bind(view)
     }
@@ -89,36 +110,41 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         }
     }
 
-    private fun initShareButton(
-        title: String = binding.textViewTitle.text.toString(),
-        description: String = binding.textViewOverview.text.toString()
-    ) {
-        binding.shareButton.setOnClickListener {
-            val shareIntent = android.content.Intent().apply {
-                action = android.content.Intent.ACTION_SEND
-                putExtra(android.content.Intent.EXTRA_TEXT, "$title\n\n$description")
-                type = "text/plain"
+    private fun initShareButton() {
+        with(binding) {
+            val title = textViewTitle.text.toString()
+            val description = textViewOverview.text.toString()
+            shareButton.setOnClickListener {
+                val shareIntent = android.content.Intent().apply {
+                    action = android.content.Intent.ACTION_SEND
+                    putExtra(android.content.Intent.EXTRA_TEXT, "$title\n\n$description")
+                    type = "text/plain"
+                }
+                val shareIntentChooser = android.content.Intent.createChooser(shareIntent, null)
+                startActivity(shareIntentChooser)
             }
-            val shareIntentChooser = android.content.Intent.createChooser(shareIntent, null)
-            startActivity(shareIntentChooser)
         }
     }
 
     private fun initOpenAtSiteButton() {
-        binding.buttonOpenAtSite.setOnClickListener {
-            val url = arguments?.getString("url")
-            if (url == null) return@setOnClickListener
-            val openAtSiteIntent = android.content.Intent().apply {
-                action = android.content.Intent.ACTION_VIEW
-                data = android.net.Uri.parse(url)
+        with(binding) {
+            buttonOpenAtSite.setOnClickListener {
+                val url = args.url
+                if (url == null) return@setOnClickListener
+                val openAtSiteIntent = android.content.Intent().apply {
+                    action = android.content.Intent.ACTION_VIEW
+                    data = android.net.Uri.parse(url)
+                }
+                startActivity(openAtSiteIntent)
             }
-            startActivity(openAtSiteIntent)
         }
     }
 
     private fun initBackButton() {
-        binding.backButton.setOnClickListener {
-            activity?.onBackPressed()
+        with(binding) {
+            backButton.setOnClickListener {
+                activity?.onBackPressed()
+            }
         }
     }
 }
