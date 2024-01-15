@@ -1,69 +1,67 @@
 package com.fivesysdev.newsapp.adapters
 
-import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.fivesysdev.newsapp.DetailsFragment
-import com.fivesysdev.newsapp.R
+import com.fivesysdev.newsapp.NewsListFragmentDirections
 import com.fivesysdev.newsapp.databinding.NewsCardBinding
-import com.fivesysdev.newsapp.model.topHeadlines.Article
-import com.fivesysdev.newsapp.model.topHeadlines.TopHeadlines
+import com.fivesysdev.newsapp.room.models.news.news.News
 
 
 class NewsAdapter(
 ) : RecyclerView.Adapter<NewsAdapter.MyNewsHolder>() {
-    private var _TopHeadlines: MutableLiveData<TopHeadlines> = MutableLiveData()
+    private var _TopHeadlines: MutableLiveData<List<News>> = MutableLiveData()
 
 
-    fun setTopHeadlines(topHeadlines: TopHeadlines) {
-       updateTopHeadlines(topHeadlines)
+    fun setTopHeadlines(list: List<News>) {
+       updateTopHeadlines(list)
     }
-    fun updateTopHeadlines(newTopHeadlines: TopHeadlines) {
-        val diffCallback = TopHeadlinesDiffCallback(_TopHeadlines.value?.articles, newTopHeadlines.articles)
+    fun updateTopHeadlines(list: List<News>) {
+        val diffCallback = TopHeadlinesDiffCallback(_TopHeadlines.value, list)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 
-        _TopHeadlines.value = newTopHeadlines
+        _TopHeadlines.value = list
         diffResult.dispatchUpdatesTo(this)
     }
 
-    fun getTopHeadlines(): TopHeadlines? {
+    fun getTopHeadlines(): List<News>? {
         return _TopHeadlines.value
     }
 
 
     class MyNewsHolder(private val binding: NewsCardBinding) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
-            private lateinit var item: Article
+            private lateinit var item: News
 
         init {
             itemView.setOnClickListener(this)
         }
 
         override fun onClick(v: View) {
+
+
+            val action = NewsListFragmentDirections.actionNewsListFragmentToDetailsFragment(
+                title = item.title,
+                description = item.description,
+                url = item.url,
+                imageUrl = item.urlToImage,
+                id = item.id,
+
+            )
             val navController = Navigation.findNavController(itemView)
-            val Bundle = Bundle()
-            Bundle.putString("title", item.title)
-            Bundle.putString("description", item.description)
-            Bundle.putString("author", item.author)
-            Bundle.putString("image_url", item.urlToImage)
-            navController.navigate(R.id.action_newsListFragment_to_detailsFragment, Bundle)
+            navController.navigate(action)
         }
-        fun bind(item: Article) {
+        fun bind(item: News) {
             this.item = item
-            binding.txtName.text = item.title
-            binding.txtTeam.text = item.description
-            binding.imageMovie.load(item.urlToImage)
-            binding.txtCreatedby.text = item.author
+            with(binding){
+                txtName.text = item.title
+                newsImage.load(item.urlToImage)
+            }
         }
     }
 
@@ -72,16 +70,16 @@ class NewsAdapter(
         return MyNewsHolder(binding)
     }
 
-    override fun getItemCount() = _TopHeadlines.value?.articles?.size ?: 0
+    override fun getItemCount() = _TopHeadlines.value?.size ?: 0
 
     override fun onBindViewHolder(holder: MyNewsHolder, position: Int) {
         if (_TopHeadlines.value == null) return
-        val listItem = _TopHeadlines.value!!.articles[position]
+        val listItem = _TopHeadlines.value!![position]
         holder.bind(listItem)
     }
     private class TopHeadlinesDiffCallback(
-        private val oldList: List<Article>?,
-        private val newList: List<Article>
+        private val oldList: List<News>?,
+        private val newList: List<News>
     ) : DiffUtil.Callback() {
 
         override fun getOldListSize(): Int = oldList?.size ?: 0

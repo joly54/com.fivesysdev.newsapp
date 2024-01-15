@@ -1,6 +1,6 @@
 [versions]
-agp = "8.3.0-beta01"
-kotlin = "1.9.21"
+agp = "8.2.1"
+kotlin = "1.9.22"
 coreKtx = "1.12.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
@@ -12,15 +12,21 @@ constraintlayout = "2.1.4"
 navigationUiKtx = "2.7.6"
 navigationFragmentKtx = "2.7.6"
 retrofit = "2.9.0"
-koin = "3.5.0"
+koin = "3.5.3"
 rxjava = "3.1.8"
 coil = "2.5.0"
 fragment = "1.6.2"
+ksp = "1.9.22-1.0.16"
+room = "2.6.1"
+lifecycle-runtime-ktx = "2.7.0"
+live-data = "1.6.0-rc01"
 
 [libraries]
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationUiKtx" }
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "live-data" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -36,12 +42,22 @@ koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", versi
 rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
 
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+safeArgs-gradle = { group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version.ref = "navigationUiKtx" }
+
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+safeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigationUiKtx" }
 
 [bundles]
 core = [ "androidx-core-ktx", "androidx-appcompat", "material", "androidx-activity", "androidx-constraintlayout", "coil" ]
 network = [ "retrofit", "retrofit-gson" ]
 di = [ "koin", "koin-compose" ]
+room = ["room-runtime", "room-ktx"]
 
